@@ -2,6 +2,15 @@ import streamlit as st
 import pandas as pd
 from agents import run_agents
 
+try:
+    st.title("CareerPilot AI")
+    st.write("Loading…")
+
+    # Example: check if Gemini key exists
+    import os
+    st.write(os.environ["GEMINI_API_KEY"])
+
+
 st.set_page_config(
 page_title="CareerPilot AI",
 page_icon="🚀",
