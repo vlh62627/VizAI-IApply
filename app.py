@@ -25,7 +25,7 @@ st.markdown("""
     border-radius: 15px;
     margin-bottom: 20px;
     # box-shadow: 3px 3px 10px rgba(0,0,0,0.2);
-    color: red;
+    color: White;
 }
 
 /* Text input inside card */
@@ -38,7 +38,7 @@ st.markdown("""
 
 /* Labels for inputs - solid black */
 .stTextInput>div>label {
-    color: red !important;
+    color: solid black !important;
     font-weight: bold;
 }
 
