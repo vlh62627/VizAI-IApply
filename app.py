@@ -9,39 +9,69 @@ st.set_page_config(
     layout="wide"
 )
 
-# 2. Custom CSS – elegant background, card style, black borders and labels
+# 2. Custom CSS – solid background, input labels black, remove white boxes, add subtle dividers
 st.markdown("""
 <style>
+/* Full page background elegant blue */
+[data-testid="stAppViewContainer"] {
+    background-color: #1E40AF;  /* Elegant deep blue */
+    color: black;
+}
+
 /* Make input labels solid black */
 .stTextInput>div>label {
     color: black !important;
     font-weight: bold;
 }
 
-/* Remove white background for the "Enter your details:" card */
-.card:first-of-type {
+/* Remove white background for cards */
+.card {
     background-color: transparent !important;
     box-shadow: none !important;
     padding: 0px !important;
     margin-bottom: 0px !important;
 }
 
-/* Remove white background for the button card */
-.card:last-of-type {
-    background-color: transparent !important;
-    box-shadow: none !important;
-    padding: 0px !important;
-    margin-bottom: 0px !important;
+/* Add subtle divider lines */
+.divider {
+    border-bottom: 2px solid #FFD700; /* Gold divider */
+    margin: 20px 0px;
+}
+
+/* Spacing above sections */
+.section {
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+
+/* Button */
+.stButton>button {
+    background-color: #FFA500;
+    color: black;
+    font-size: 22px;
+    padding: 14px 40px;
+    border-radius: 12px;
+    font-weight: bold;
+}
+.stButton>button:hover {
+    background-color: #FFD700; /* Gold hover */
+    color: #1E40AF;
+}
+
+/* Center all inputs */
+.css-1aumxhk {
+    justify-content: center;
 }
 </style>
 """, unsafe_allow_html=True)
 
-# 3. Main title and subtitle using HTML
-st.markdown('<h1 style="text-align:left; font-size:40px; color:white; margin-bottom:10px;">✈️ CareerPilot AI</h1>', unsafe_allow_html=True)
-st.markdown('<h3 style="text-align:left; font-size:20px; color:white; margin-bottom:20px;">Your AI assistant that finds jobs and applies automatically</h3>', unsafe_allow_html=True)
+# 3. Main title and subtitle
+st.markdown('<h1 style="text-align:left; font-size:50px; color:white; margin-bottom:10px;">✈️ CareerPilot AI</h1>', unsafe_allow_html=True)
+st.markdown('<h3 style="text-align:left; font-size:22px; color:white; margin-bottom:20px;">Your AI assistant that finds jobs and applies automatically</h3>', unsafe_allow_html=True)
 
-# 4. Inputs on main page inside a card
-st.markdown('<div class="card">', unsafe_allow_html=True)
+# 4. Inputs section with subtle divider
+st.markdown('<div class="section">', unsafe_allow_html=True)
+st.markdown('<div class="divider"></div>', unsafe_allow_html=True)
 st.write("### Enter your details:")
 job_roles = st.text_input("Job Roles (use & to separate)")
 user_email = st.text_input("Your Email")
@@ -57,8 +87,9 @@ except Exception as e:
     st.error(f"Agents import failed: {e}")
     run_agents = None
 
-# 6. Apply button inside card
-st.markdown('<div class="card">', unsafe_allow_html=True)
+# 6. Apply button section with subtle divider
+st.markdown('<div class="section">', unsafe_allow_html=True)
+st.markdown('<div class="divider"></div>', unsafe_allow_html=True)
 if st.button("Start AI Job Agent"):
     if run_agents:
         try:
