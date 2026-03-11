@@ -25,12 +25,12 @@ st.markdown("""
     border-radius: 15px;
     margin-bottom: 20px;
     # box-shadow: 3px 3px 10px rgba(0,0,0,0.2);
-    color: black;
+    color: white;
 }
 
 /* Text input inside card */
 .stTextInput>div>div>input, .stFileUploader>div>div>div {
-    height: 50px;
+    height: 40px;
     font-size: 18px;
     border-radius: 8px;
     # border: 2px solid black; /* Solid black border */
