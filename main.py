@@ -1,0 +1,1 @@
+pip install streamlit selenium beautifulsoup4 google-generativeai pandas schedule python-dotenv
