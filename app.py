@@ -2,60 +2,71 @@ import streamlit as st
 import os
 import pandas as pd
 
-# 1. Page config must be first
+# 1. Page config
 st.set_page_config(
     page_title="CareerPilot AI",
     page_icon="✈️",
     layout="wide"
 )
 
-# 2. Custom CSS for colors, bigger title, input styling
+# 2. Custom CSS for background, title, inputs, button
 st.markdown(
     """
     <style>
-    /* Background */
-    .main {
-        background-color: #F8FAFC;
+    /* Full page background gradient */
+    body {
+        background: linear-gradient(135deg, #2563EB, #FFA500, #FFD700);
+        background-attachment: fixed;
     }
+
     /* Title */
     .title {
-        font-size: 60px;
+        font-size: 80px;
         font-weight: bold;
-        color: #2563EB;  /* Primary Blue */
+        color: white;
         text-align: center;
         margin-bottom: 0px;
     }
+
     /* Subtitle */
     .subtitle {
-        font-size: 22px;
-        color: #FFA500; /* Orange */
+        font-size: 26px;
+        color: white;
         text-align: center;
         margin-bottom: 40px;
     }
+
     /* Input fields */
     .stTextInput>div>div>input {
-        height: 45px;
+        height: 50px;
         font-size: 18px;
         border-radius: 8px;
-        border: 2px solid #FFD700; /* Gold */
+        border: 2px solid black; /* Black border */
     }
+
     /* File uploader */
     .stFileUploader>div>div>div {
-        border: 2px solid #2563EB;
+        border: 2px solid black;
         border-radius: 8px;
     }
+
     /* Button */
     .stButton>button {
         background-color: #FFA500;
         color: white;
-        font-size: 20px;
-        padding: 12px 30px;
+        font-size: 22px;
+        padding: 14px 40px;
         border-radius: 10px;
         font-weight: bold;
     }
     .stButton>button:hover {
         background-color: #FFD700; /* Gold hover */
         color: #2563EB;
+    }
+
+    /* Center all inputs and button */
+    .css-1aumxhk {
+        justify-content: center;
     }
     </style>
     """,
