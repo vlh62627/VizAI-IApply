@@ -25,7 +25,7 @@ st.markdown("""
     border-radius: 15px;
     margin-bottom: 20px;
     # box-shadow: 3px 3px 10px rgba(0,0,0,0.2);
-    color: white;
+    color: red;
 }
 
 /* Text input inside card */
