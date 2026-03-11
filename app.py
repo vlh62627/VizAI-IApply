@@ -12,15 +12,9 @@ st.set_page_config(
 # 2. Custom CSS – remove spacing, increase label font size, bold
 st.markdown("""
 <style>
-/* Full page background elegant blue */
-[data-testid="stAppViewContainer"] {
-    background-color: #1E40AF;  /* Elegant deep blue */
-    color: black;
-}
-
-/* Input labels - solid black, bold, bigger font */
+/* Input labels - match "Enter your details" color (white), bold, bigger font */
 .stTextInput>div>label {
-    color: black !important;
+    color: white !important;  /* Match heading color */
     font-weight: bold !important;
     font-size: 20px !important;  /* +2 font size */
 }
