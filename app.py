@@ -38,7 +38,7 @@ st.markdown("""
 
 /* Labels for inputs - solid black */
 .stTextInput>div>label {
-    color: black !important;
+    color: white !important;
     font-weight: bold;
 }
 
