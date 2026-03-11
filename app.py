@@ -24,7 +24,7 @@ st.markdown("""
     padding: 25px;
     border-radius: 15px;
     margin-bottom: 20px;
-    box-shadow: 3px 3px 10px rgba(0,0,0,0.2);
+    # box-shadow: 3px 3px 10px rgba(0,0,0,0.2);
     color: black;
 }
 
@@ -38,7 +38,7 @@ st.markdown("""
 
 /* Labels for inputs - solid black */
 .stTextInput>div>label {
-    color: black !important;
+    color: white !important;
     font-weight: bold;
 }
 
