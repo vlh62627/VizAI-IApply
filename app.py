@@ -9,7 +9,7 @@ st.set_page_config(
     layout="wide"
 )
 
-# 2. Custom CSS – solid background, input labels black, remove white boxes, add subtle dividers
+# 2. Custom CSS – remove spacing, increase label font size, bold
 st.markdown("""
 <style>
 /* Full page background elegant blue */
@@ -18,10 +18,11 @@ st.markdown("""
     color: black;
 }
 
-/* Make input labels solid black */
+/* Input labels - solid black, bold, bigger font */
 .stTextInput>div>label {
     color: black !important;
-    font-weight: bold;
+    font-weight: bold !important;
+    font-size: 20px !important;  /* +2 font size */
 }
 
 /* Remove white background for cards */
@@ -32,16 +33,16 @@ st.markdown("""
     margin-bottom: 0px !important;
 }
 
-/* Add subtle divider lines */
+/* Subtle gold divider */
 .divider {
     border-bottom: 2px solid #FFD700; /* Gold divider */
-    margin: 20px 0px;
+    margin: 0px 0px 5px 0px; /* minimal space below line */
 }
 
-/* Spacing above sections */
+/* Section spacing tightened */
 .section {
-    margin-top: 30px;
-    margin-bottom: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 /* Button */
@@ -69,7 +70,7 @@ st.markdown("""
 st.markdown('<h1 style="text-align:left; font-size:50px; color:white; margin-bottom:10px;">✈️ CareerPilot AI</h1>', unsafe_allow_html=True)
 st.markdown('<h3 style="text-align:left; font-size:22px; color:white; margin-bottom:20px;">Your AI assistant that finds jobs and applies automatically</h3>', unsafe_allow_html=True)
 
-# 4. Inputs section with subtle divider
+# 4. Inputs section with tight divider
 st.markdown('<div class="section">', unsafe_allow_html=True)
 st.markdown('<div class="divider"></div>', unsafe_allow_html=True)
 st.write("### Enter your details:")
@@ -87,7 +88,7 @@ except Exception as e:
     st.error(f"Agents import failed: {e}")
     run_agents = None
 
-# 6. Apply button section with subtle divider
+# 6. Apply button section with tight divider
 st.markdown('<div class="section">', unsafe_allow_html=True)
 st.markdown('<div class="divider"></div>', unsafe_allow_html=True)
 if st.button("Start AI Job Agent"):
