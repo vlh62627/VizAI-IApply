@@ -9,49 +9,26 @@ st.set_page_config(
     layout="wide"
 )
 
-# 2. Custom CSS – animated gradient, cards, inputs
+# 2. Custom CSS – solid blue background, card style, black borders
 st.markdown("""
 <style>
-/* Animated gradient background */
-@keyframes gradientBG {
-    0% {background-position: 0% 50%;}
-    50% {background-position: 100% 50%;}
-    100% {background-position: 0% 50%;}
-}
-
-body {
-    background: linear-gradient(135deg, #2563EB, #FFA500, #FFD700);
-    background-size: 400% 400%;
-    animation: gradientBG 15s ease infinite;
-}
-
-/* Title */
-.title {
-    font-size: 90px;
-    font-weight: bold;
+/* Full page background solid blue */
+[data-testid="stAppViewContainer"] {
+    background-color: #2563EB;  /* Primary Blue */
     color: white;
-    text-align: center;
-    margin-bottom: 0px;
 }
 
-/* Subtitle */
-.subtitle {
-    font-size: 28px;
-    color: white;
-    text-align: center;
-    margin-bottom: 40px;
-}
-
-/* Card container */
+/* Card container for inputs */
 .card {
-    background-color: rgba(255, 255, 255, 0.9);
+    background-color: #FFFFFF;  /* White card for inputs */
     padding: 25px;
     border-radius: 15px;
     margin-bottom: 20px;
     box-shadow: 3px 3px 10px rgba(0,0,0,0.2);
+    color: black;
 }
 
-/* Inputs inside card */
+/* Text input inside card */
 .stTextInput>div>div>input, .stFileUploader>div>div>div {
     height: 50px;
     font-size: 18px;
@@ -69,22 +46,22 @@ body {
     font-weight: bold;
 }
 .stButton>button:hover {
-    background-color: #FFD700;
+    background-color: #FFD700; /* Gold hover */
     color: #2563EB;
 }
 
-/* Center everything */
+/* Center all inputs */
 .css-1aumxhk {
     justify-content: center;
 }
 </style>
 """, unsafe_allow_html=True)
 
-# 3. Main title
-st.markdown('<p class="title">✈️ CareerPilot AI</p>', unsafe_allow_html=True)
-st.markdown('<p class="subtitle">Your AI assistant that finds jobs and applies automatically.</p>', unsafe_allow_html=True)
+# 3. Main title and subtitle using HTML for proper size
+st.markdown('<h1 style="text-align:center; font-size:80px; color:white; margin-bottom:10px;">✈️ CareerPilot AI</h1>', unsafe_allow_html=True)
+st.markdown('<h3 style="text-align:center; font-size:28px; color:white; margin-bottom:40px;">Your AI assistant that finds jobs and applies automatically</h3>', unsafe_allow_html=True)
 
-# 4. Input cards
+# 4. Inputs on main page inside a card
 st.markdown('<div class="card">', unsafe_allow_html=True)
 st.write("### Enter your details:")
 job_roles = st.text_input("Job Roles (use & to separate)")
@@ -101,7 +78,7 @@ except Exception as e:
     st.error(f"Agents import failed: {e}")
     run_agents = None
 
-# 6. Apply button in card
+# 6. Apply button inside card
 st.markdown('<div class="card">', unsafe_allow_html=True)
 if st.button("Start AI Job Agent"):
     if run_agents:
