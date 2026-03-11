@@ -16,7 +16,7 @@ try:
 except FileNotFoundError:
     st.warning("style.css not found")
 
-st.markdown('<div class='math-header">✈️CareerPilot AI</p>', unsafe_allow_html=True)
+st.markdown('<div class="math-header">✈️CareerPilot AI</p>', unsafe_allow_html=True)
 
 # 3. Test API key safely
 gemini_key = os.environ.get("GEMINI_API_KEY")
