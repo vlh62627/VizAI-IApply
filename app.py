@@ -1,63 +1,57 @@
 import streamlit as st
+import os
 import pandas as pd
-from agents import run_agents
 
-try:
-    st.title("CareerPilot AI")
-    st.write("Loading…")
-
-    # Example: check if Gemini key exists
-    import os
-    st.write(os.environ["GEMINI_API_KEY"])
-
-
+# 1. Page config must be first
 st.set_page_config(
-page_title="CareerPilot AI",
-page_icon="🚀",
-layout="wide"
+    page_title="CareerPilot AI",
+    page_icon="🚀",
+    layout="wide"
 )
 
-with open("style.css") as f:
-    st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+# 2. Load CSS safely
+try:
+    with open("style.css") as f:
+        st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+except FileNotFoundError:
+    st.warning("style.css not found")
 
 st.markdown('<p class="main-title">CareerPilot AI</p>', unsafe_allow_html=True)
 
+# 3. Test API key safely
+gemini_key = os.environ.get("GEMINI_API_KEY")
+if gemini_key:
+    st.write("GEMINI_API_KEY loaded")
+else:
+    st.warning("GEMINI_API_KEY not found. Add in Streamlit secrets.")
+
 st.write("Your AI assistant that finds jobs and applies automatically.")
 
+# 4. Sidebar inputs
 st.sidebar.header("User Settings")
 
-
-job_roles = st.text_input(
-"Job Roles (use & to separate)",
-"QA Analyst & Automation Tester"
-)
-
+job_roles = st.text_input("Job Roles (use & to separate)", "QA Analyst & Automation Tester")
 user_email = st.text_input("Your Email")
-
 linkedin_email = st.text_input("LinkedIn Email")
+linkedin_password = st.text_input("LinkedIn Password", type="password")
+cv = st.file_uploader("Upload CV", type=["pdf","docx"])
 
-linkedin_password = st.text_input(
-"LinkedIn Password",
-type="password"
-)
+# 5. Import agents safely
+try:
+    from agents import run_agents
+except Exception as e:
+    st.error(f"Agents import failed: {e}")
+    run_agents = None
 
-cv = st.file_uploader(
-"Upload CV",
-type=["pdf","docx"]
-)
-
+# 6. Button click
 if st.button("Start AI Job Agent"):
-
-    results = run_agents(
-        job_roles,
-        linkedin_email,
-        linkedin_password,
-        user_email,
-        cv
-    )
-
-    df = pd.DataFrame(results)
-
-    st.success(f"{len(df)} applications sent!")
-
-    st.dataframe(df)
+    if run_agents:
+        try:
+            results = run_agents(job_roles, linkedin_email, linkedin_password, user_email, cv)
+            df = pd.DataFrame(results)
+            st.success(f"{len(df)} applications sent!")
+            st.dataframe(df)
+        except Exception as e:
+            st.error(f"Error during job agent run: {e}")
+    else:
+        st.error("Cannot run agents due to import error")
