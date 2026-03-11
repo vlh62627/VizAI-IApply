@@ -17,33 +17,6 @@ st.write("Your AI assistant that finds jobs and applies automatically.")
 
 st.sidebar.header("User Settings")
 
-body {
-background-color: #F8FAFC;
-}
-
-.main-title {
-color: #2563EB;
-font-size: 40px;
-font-weight: bold;
-}
-
-.stButton>button {
-background-color: #4F46E5;
-color: white;
-border-radius: 8px;
-padding: 10px 20px;
-}
-
-.stButton>button:hover {
-background-color: #06B6D4;
-color: white;
-}
-
-.sidebar .sidebar-content {
-background-color: #0F172A;
-color: white;
-}
-
 
 job_roles = st.text_input(
 "Job Roles (use & to separate)",
