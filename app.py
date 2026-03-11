@@ -12,53 +12,26 @@ st.set_page_config(
 # 2. Custom CSS – elegant background, card style, black borders and labels
 st.markdown("""
 <style>
-/* Full page background elegant blue */
-[data-testid="stAppViewContainer"] {
-    background-color: #1E40AF;  /* Elegant deep blue */
-    color: black;
-}
-
-/* Card container for inputs */
-.card {
-    background-color: #FFFFFF;  /* White card for inputs */
-    padding: 25px;
-    border-radius: 15px;
-    margin-bottom: 20px;
-    # box-shadow: 3px 3px 10px rgba(0,0,0,0.2);
-    color: White;
-}
-
-/* Text input inside card */
-.stTextInput>div>div>input, .stFileUploader>div>div>div {
-    height: 40px;
-    font-size: 18px;
-    border-radius: 8px;
-    # border: 2px solid black; /* Solid black border */
-}
-
-/* Labels for inputs - solid black */
+/* Make input labels solid black */
 .stTextInput>div>label {
-    color: solid black !important;
+    color: black !important;
     font-weight: bold;
 }
 
-/* Button */
-.stButton>button {
-    background-color: #FFA500;
-    color: black;
-    font-size: 22px;
-    padding: 14px 40px;
-    border-radius: 12px;
-    font-weight: bold;
-}
-.stButton>button:hover {
-    background-color: #FFD700; /* Gold hover */
-    color: #1E40AF;
+/* Remove white background for the "Enter your details:" card */
+.card:first-of-type {
+    background-color: transparent !important;
+    box-shadow: none !important;
+    padding: 0px !important;
+    margin-bottom: 0px !important;
 }
 
-/* Center all inputs */
-.css-1aumxhk {
-    justify-content: center;
+/* Remove white background for the button card */
+.card:last-of-type {
+    background-color: transparent !important;
+    box-shadow: none !important;
+    padding: 0px !important;
+    margin-bottom: 0px !important;
 }
 </style>
 """, unsafe_allow_html=True)
