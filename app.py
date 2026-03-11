@@ -59,7 +59,7 @@ st.markdown("""
 
 # 3. Main title and subtitle using HTML for proper size
 st.markdown('<h1 style="text-align:left; font-size:40px; color:white; margin-bottom:10px;">✈️ CareerPilot AI</h1>', unsafe_allow_html=True)
-st.markdown('<h3 style="text-align:left; font-size:10px; color:white; margin-bottom:20px;">Your AI assistant that finds jobs and applies automatically</h3>', unsafe_allow_html=True)
+st.markdown('<h3 style="text-align:left; font-size:20px; color:white; margin-bottom:20px;">Your AI assistant that finds jobs and applies automatically</h3>', unsafe_allow_html=True)
 
 # 4. Inputs on main page inside a card
 st.markdown('<div class="card">', unsafe_allow_html=True)
