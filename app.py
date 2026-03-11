@@ -9,12 +9,12 @@ st.set_page_config(
     layout="wide"
 )
 
-# 2. Custom CSS – solid blue background, card style, black borders
+# 2. Custom CSS – elegant background, card style, black borders and labels
 st.markdown("""
 <style>
-/* Full page background solid blue */
+/* Full page background elegant blue */
 [data-testid="stAppViewContainer"] {
-    background-color: #2563EB;  /* Primary Blue */
+    background-color: #1E40AF;  /* Elegant deep blue */
     color: white;
 }
 
@@ -33,7 +33,13 @@ st.markdown("""
     height: 50px;
     font-size: 18px;
     border-radius: 8px;
-    # border: 2px solid black; /* Black border */
+    border: 2px solid black; /* Solid black border */
+}
+
+/* Labels for inputs - solid black */
+.stTextInput>div>label {
+    color: black !important;
+    font-weight: bold;
 }
 
 /* Button */
@@ -47,7 +53,7 @@ st.markdown("""
 }
 .stButton>button:hover {
     background-color: #FFD700; /* Gold hover */
-    color: #2563EB;
+    color: #1E40AF;
 }
 
 /* Center all inputs */
@@ -57,7 +63,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# 3. Main title and subtitle using HTML for proper size
+# 3. Main title and subtitle using HTML
 st.markdown('<h1 style="text-align:left; font-size:40px; color:white; margin-bottom:10px;">✈️ CareerPilot AI</h1>', unsafe_allow_html=True)
 st.markdown('<h3 style="text-align:left; font-size:20px; color:white; margin-bottom:20px;">Your AI assistant that finds jobs and applies automatically</h3>', unsafe_allow_html=True)
 
