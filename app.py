@@ -5,32 +5,75 @@ import pandas as pd
 # 1. Page config must be first
 st.set_page_config(
     page_title="CareerPilot AI",
-    page_icon="🚀",
+    page_icon="✈️",
     layout="wide"
 )
 
-# 2. Load CSS safely
-try:
-    with open("style.css") as f:
-        st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
-except FileNotFoundError:
-    st.warning("style.css not found")
+# 2. Custom CSS for colors, bigger title, input styling
+st.markdown(
+    """
+    <style>
+    /* Background */
+    .main {
+        background-color: #F8FAFC;
+    }
+    /* Title */
+    .title {
+        font-size: 60px;
+        font-weight: bold;
+        color: #2563EB;  /* Primary Blue */
+        text-align: center;
+        margin-bottom: 0px;
+    }
+    /* Subtitle */
+    .subtitle {
+        font-size: 22px;
+        color: #FFA500; /* Orange */
+        text-align: center;
+        margin-bottom: 40px;
+    }
+    /* Input fields */
+    .stTextInput>div>div>input {
+        height: 45px;
+        font-size: 18px;
+        border-radius: 8px;
+        border: 2px solid #FFD700; /* Gold */
+    }
+    /* File uploader */
+    .stFileUploader>div>div>div {
+        border: 2px solid #2563EB;
+        border-radius: 8px;
+    }
+    /* Button */
+    .stButton>button {
+        background-color: #FFA500;
+        color: white;
+        font-size: 20px;
+        padding: 12px 30px;
+        border-radius: 10px;
+        font-weight: bold;
+    }
+    .stButton>button:hover {
+        background-color: #FFD700; /* Gold hover */
+        color: #2563EB;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 
-st.markdown('<div class="math-header">✈️CareerPilot AI</p>', unsafe_allow_html=True)
+# 3. Main Title
+st.markdown('<p class="title">✈️ CareerPilot AI</p>', unsafe_allow_html=True)
+st.markdown('<p class="subtitle">Your AI assistant that finds jobs and applies automatically.</p>', unsafe_allow_html=True)
 
-# 3. Test API key safely
-gemini_key = os.environ.get("GEMINI_API_KEY")
-
-st.write("Your AI assistant that finds jobs and applies automatically.")
-
-# 4. Sidebar inputs
-st.sidebar.header("User Settings")
+# 4. Inputs on main page (no sidebar)
+st.write("### Enter your details:")
 
 job_roles = st.text_input("Job Roles (use & to separate)")
 user_email = st.text_input("Your Email")
 linkedin_email = st.text_input("LinkedIn Email")
 linkedin_password = st.text_input("LinkedIn Password", type="password")
-cv = st.file_uploader("Upload CV", type=["pdf","docx"])
+cv = st.file_uploader("Upload CV", type=["pdf", "docx"])
 
 # 5. Import agents safely
 try:
