@@ -15,7 +15,7 @@ st.markdown("""
 /* Full page background elegant blue */
 [data-testid="stAppViewContainer"] {
     background-color: #1E40AF;  /* Elegant deep blue */
-    color: white;
+    color: black;
 }
 
 /* Card container for inputs */
@@ -45,7 +45,7 @@ st.markdown("""
 /* Button */
 .stButton>button {
     background-color: #FFA500;
-    color: white;
+    color: black;
     font-size: 22px;
     padding: 14px 40px;
     border-radius: 12px;
