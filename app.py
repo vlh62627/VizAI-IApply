@@ -33,7 +33,7 @@ st.markdown("""
     height: 50px;
     font-size: 18px;
     border-radius: 8px;
-    border: 2px solid black; /* Black border */
+    # border: 2px solid black; /* Black border */
 }
 
 /* Button */
@@ -58,7 +58,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # 3. Main title and subtitle using HTML for proper size
-st.markdown('<h1 style="text-align:center; font-size:80px; color:white; margin-bottom:10px;">✈️ CareerPilot AI</h1>', unsafe_allow_html=True)
+st.markdown('<h1 style="text-align:center; font-size:50px; color:white; margin-bottom:10px;">✈️ CareerPilot AI</h1>', unsafe_allow_html=True)
 st.markdown('<h3 style="text-align:center; font-size:28px; color:white; margin-bottom:40px;">Your AI assistant that finds jobs and applies automatically</h3>', unsafe_allow_html=True)
 
 # 4. Inputs on main page inside a card
