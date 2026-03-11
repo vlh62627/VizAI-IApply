@@ -26,7 +26,7 @@ st.write("Your AI assistant that finds jobs and applies automatically.")
 # 4. Sidebar inputs
 st.sidebar.header("User Settings")
 
-job_roles = st.text_input("Job Roles (use "&" to separate)")
+job_roles = st.text_input("Job Roles (use & to separate)")
 user_email = st.text_input("Your Email")
 linkedin_email = st.text_input("LinkedIn Email")
 linkedin_password = st.text_input("LinkedIn Password", type="password")
