@@ -33,12 +33,12 @@ st.markdown("""
     height: 50px;
     font-size: 18px;
     border-radius: 8px;
-    border: 2px solid black; /* Solid black border */
+    # border: 2px solid black; /* Solid black border */
 }
 
 /* Labels for inputs - solid black */
 .stTextInput>div>label {
-    color: white !important;
+    color: black !important;
     font-weight: bold;
 }
 
