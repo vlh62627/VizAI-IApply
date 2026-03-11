@@ -16,21 +16,17 @@ try:
 except FileNotFoundError:
     st.warning("style.css not found")
 
-st.markdown('<p class="main-title">CareerPilot AI</p>', unsafe_allow_html=True)
+st.markdown('<div class='math-header">✈️CareerPilot AI</p>', unsafe_allow_html=True)
 
 # 3. Test API key safely
 gemini_key = os.environ.get("GEMINI_API_KEY")
-if gemini_key:
-    st.write("GEMINI_API_KEY loaded")
-else:
-    st.warning("GEMINI_API_KEY not found. Add in Streamlit secrets.")
 
 st.write("Your AI assistant that finds jobs and applies automatically.")
 
 # 4. Sidebar inputs
 st.sidebar.header("User Settings")
 
-job_roles = st.text_input("Job Roles (use & to separate)", "QA Analyst & Automation Tester")
+job_roles = st.text_input("Job Roles (use "&" to separate)")
 user_email = st.text_input("Your Email")
 linkedin_email = st.text_input("LinkedIn Email")
 linkedin_password = st.text_input("LinkedIn Password", type="password")
