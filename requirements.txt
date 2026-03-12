@@ -1,8 +1,7 @@
 streamlit
-selenium
+pandas
+requests
 beautifulsoup4
 google-generativeai
-pandas
-python-dotenv
 schedule
-webdriver-manager
+python-dotenv
