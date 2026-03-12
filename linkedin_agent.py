@@ -21,7 +21,7 @@ def linkedin_search(driver, email, password, roles):
     time.sleep(5)
 
     # Build search query
-    query = f"Hiring gmail.com {roles}"
+    query = f'"we are hiring" {roles} email'
     encoded_query = urllib.parse.quote(query)
 
     url = f"https://www.linkedin.com/search/results/content/?keywords={encoded_query}"
@@ -43,3 +43,4 @@ def linkedin_search(driver, email, password, roles):
         })
 
     return results
+
