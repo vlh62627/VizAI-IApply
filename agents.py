@@ -3,23 +3,30 @@ from coverletter_agent import generate_cover
 from email_agent import send_application
 
 from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
-from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
 
-options = Options()
-options.add_argument("--headless")
-options.add_argument("--no-sandbox")
-options.add_argument("--disable-dev-shm-usage")
+def create_driver():
 
-driver = webdriver.Chrome(
-    service=Service(ChromeDriverManager().install()),
-    options=options
-)
+    options = Options()
+    options.add_argument("--headless=new")
+    options.add_argument("--no-sandbox")
+    options.add_argument("--disable-dev-shm-usage")
+    options.add_argument("--disable-gpu")
+
+    # Important for Linux/Streamlit environments
+    options.binary_location = "/usr/bin/chromium"
+
+    driver = webdriver.Chrome(options=options)
+
+    return driver
+
 
 def run_agents(job_roles, li_email, li_pass, user_email, cv):
 
-    posts = linkedin_search(li_email, li_pass, job_roles)
+    driver = create_driver()
+
+    posts = linkedin_search(driver, li_email, li_pass, job_roles)
 
     results = []
 
@@ -42,7 +49,6 @@ def run_agents(job_roles, li_email, li_pass, user_email, cv):
             "Status": "Sent"
         })
 
+    driver.quit()
 
     return results
-
-
