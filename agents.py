@@ -19,42 +19,36 @@ def create_driver():
 def run_agents(job_roles, li_email, li_pass, user_email, cv):
     driver = create_driver()
     
-    # FIX: Unpack both the results list and the screenshots dictionary
-    # This ensures 'posts' is strictly the list of dictionaries
+    # 1. Scraping identified posts
     posts, screenshots = linkedin_search(driver, li_email, li_pass, job_roles)
+    
+    final_results = []
 
-    results = []
-
-    # Now 'posts' is a list, so 'post' is a dictionary
+    # 2. Iterating through identified posts
     for post in posts:
-        # Match these keys to what linkedin_search actually returns:
-        # In the previous update, we used "Email Address" and "Post Snippet"
-        # I have adjusted them here to be safe:
-        email = post.get("Email Address") or post.get("email")
-        text = post.get("Post Snippet") or post.get("context") or post.get("text")
+        email_to = post.get("Email Address") or post.get("email")
+        context = post.get("Post Snippet") or post.get("text")
 
-        if email:
-            try:
-                cover = generate_cover(text)
-
-                send_application(
-                    email,
-                    user_email,
-                    cover,
-                    cv
-                )
-
-                results.append({
-                    "Recruiter Email": email,
-                    "Status": "Sent"
-                })
-            except Exception as e:
-                results.append({
-                    "Recruiter Email": email,
-                    "Status": f"Failed: {str(e)}"
-                })
+        if email_to:
+            # Generate cover letter
+            cover_letter = generate_cover(context)
+            
+            # Send Email
+            success = send_application(email_to, user_email, cover_letter, cv)
+            
+            status = "✅ Sent & BCC'd" if success else "❌ Failed to Send"
+            
+            final_results.append({
+                "Identified Contact": email_to,
+                "Action Status": status,
+                "Source Post": context[:100] + "..."
+            })
+        else:
+            final_results.append({
+                "Identified Contact": "None Found",
+                "Action Status": "⚠️ Skipped",
+                "Source Post": context[:100] + "..."
+            })
 
     driver.quit()
-    
-    # Return both the results and the screenshots so the UI can still show them
-    return results, screenshots
+    return final_results, screenshots
