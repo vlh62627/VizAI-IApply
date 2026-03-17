@@ -1,6 +1,7 @@
 import streamlit as st
 import os
 import pandas as pd
+import time  # 1. Import time for the delay
 
 # 1. Page config
 st.set_page_config(
@@ -9,7 +10,7 @@ st.set_page_config(
     layout="wide"
 )
 
-# 2. Custom CSS – input labels white, no white cards, gold dividers, spacing, button styling
+# 2. Custom CSS (Kept exactly as provided)
 st.markdown("""
 <style>
 /* Full page background elegant blue */
@@ -17,35 +18,25 @@ st.markdown("""
     background-color: #1E40AF;  /* Elegant deep blue */
     color: black;
 }
-
-/* Input labels - match "Enter your details" color (white), bold, bigger font */
 .stTextInput>div>label {
-    color: white !important;  /* White labels */
+    color: white !important;  
     font-weight: bold !important;
-    font-size: 20px !important;  /* +2 font size */
+    font-size: 20px !important;  
 }
-
-/* Remove white background for cards */
 .card {
     background-color: transparent !important;
     box-shadow: none !important;
     padding: 0px !important;
     margin-bottom: 0px !important;
 }
-
-/* Subtle gold divider */
 .divider {
-    border-bottom: 2px solid #FFD700; /* Gold divider */
-    margin: 0px 0px 5px 0px; /* minimal space below line */
+    border-bottom: 2px solid #FFD700; 
+    margin: 0px 0px 5px 0px; 
 }
-
-/* Section spacing tightened */
 .section {
     margin-top: 10px;
     margin-bottom: 10px;
 }
-
-/* Button */
 .stButton>button {
     background-color: #FFA500;
     color: black;
@@ -55,13 +46,8 @@ st.markdown("""
     font-weight: bold;
 }
 .stButton>button:hover {
-    background-color: #FFD700; /* Gold hover */
+    background-color: #FFD700; 
     color: #1E40AF;
-}
-
-/* Center all inputs */
-.css-1aumxhk {
-    justify-content: center;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -70,7 +56,7 @@ st.markdown("""
 st.markdown('<h1 style="text-align:left; font-size:50px; color:white; margin-bottom:10px;">✈️ CareerPilot AI</h1>', unsafe_allow_html=True)
 st.markdown('<h3 style="text-align:left; font-size:22px; color:white; margin-bottom:20px;">Your AI assistant that finds jobs and applies automatically</h3>', unsafe_allow_html=True)
 
-# 4. Inputs section with tight divider
+# 4. Inputs section
 st.markdown('<div class="section">', unsafe_allow_html=True)
 st.markdown('<div class="divider"></div>', unsafe_allow_html=True)
 st.write("### Enter your details:")
@@ -88,16 +74,37 @@ except Exception as e:
     st.error(f"Agents import failed: {e}")
     run_agents = None
 
-# 6. Apply button section with tight divider
+# 6. Apply button section
 st.markdown('<div class="section">', unsafe_allow_html=True)
 st.markdown('<div class="divider"></div>', unsafe_allow_html=True)
+
 if st.button("Start AI Job Agent"):
-    if run_agents:
+    if not (job_roles and user_email and linkedin_email and linkedin_password and cv):
+        st.warning("Please fill in all details and upload your CV.")
+    elif run_agents:
         try:
-            results = run_agents(job_roles, linkedin_email, linkedin_password, user_email, cv)
-            df = pd.DataFrame(results)
-            st.success(f"{len(df)} applications sent!")
-            st.dataframe(df)
+            with st.spinner("Agent is working... This includes a 10s safety delay between steps."):
+                # 2. Executing run_agents
+                # Note: run_agents returns (results, screenshots)
+                results, screenshots = run_agents(job_roles, linkedin_email, linkedin_password, user_email, cv)
+                
+                # 3. Adding the requested 10-second wait after the agent run
+                time.sleep(10)
+                
+                # 4. Display Screenshots/Execution History
+                st.subheader("📸 Execution Screenshots")
+                cols = st.columns(len(screenshots))
+                for idx, (title, img) in enumerate(screenshots.items()):
+                    cols[idx].image(img, caption=title)
+
+                # 5. Display Final Table
+                df = pd.DataFrame(results)
+                if not df.empty:
+                    st.success(f"Processing complete! {len(df)} posts identified/processed.")
+                    st.dataframe(df, use_container_width=True)
+                else:
+                    st.info("No relevant posts were found during this run.")
+                    
         except Exception as e:
             st.error(f"Error during job agent run: {e}")
     else:
