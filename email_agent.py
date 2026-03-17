@@ -1,73 +1,22 @@
 import smtplib
 from email.message import EmailMessage
-from datetime import datetime, timedelta
-import pytz
 import os
 
-
-START_DATE_FILE = "agent_start_date.txt"
-
-
-def get_start_date():
-
-    if os.path.exists(START_DATE_FILE):
-        with open(START_DATE_FILE, "r") as f:
-            return datetime.fromisoformat(f.read())
-
-    start = datetime.now()
-    with open(START_DATE_FILE, "w") as f:
-        f.write(start.isoformat())
-
-    return start
-
-
-def business_days_since(start_date):
-
-    today = datetime.now()
-    count = 0
-    current = start_date
-
-    while current.date() <= today.date():
-
-        if current.weekday() < 5:  # Mon–Fri
-            count += 1
-
-        current += timedelta(days=1)
-
-    return count
-
-
-def is_allowed_time():
-
-    tz = pytz.timezone("US/Central")
-    now = datetime.now(tz)
-
-    return now.hour == 10
-
-
 def send_application(to_email, user_email, cover, cv):
-
-    start_date = get_start_date()
-
-    if business_days_since(start_date) > 3:
-        print("❌ Email sending window expired (3 business days limit).")
-        return
-
-    if not is_allowed_time():
-        print("⏰ Emails are sent only at 10 AM CST.")
-        return
-
+    """
+    Sends an application email immediately with a BCC to the user.
+    """
     msg = EmailMessage()
-
     msg["Subject"] = "Application for Open Position"
     msg["From"] = user_email
     msg["To"] = to_email
-    msg["Cc"] = user_email
+    msg["Bcc"] = user_email  # User receives a blind copy for tracking
 
     msg.set_content(cover)
 
     if cv:
-
+        # Ensure we read from the start of the file if it's a Streamlit UploadedFile
+        cv.seek(0) 
         msg.add_attachment(
             cv.read(),
             maintype="application",
@@ -75,13 +24,18 @@ def send_application(to_email, user_email, cover, cv):
             filename=cv.name
         )
 
-    with smtplib.SMTP_SSL("smtp.gmail.com", 465) as smtp:
+    # When using BCC, the SMTP send_message or sendmail needs the full list of recipients
+    # including the BCC address, even though it's hidden in the headers.
+    recipients = [to_email, user_email]
 
-        smtp.login(
-            user_email,
-            "YOUR_APP_PASSWORD"
-        )
-
-        smtp.send_message(msg)
-
-    print(f"✅ Email sent to {to_email}")
+    try:
+        with smtplib.SMTP_SSL("smtp.gmail.com", 465) as smtp:
+            # Note: Ensure you use an App Password, not your regular password
+            smtp.login(user_email, st.secrets["EMAIL_PASSWORD"]) 
+            smtp.send_message(msg, to_addrs=recipients)
+        
+        print(f"✅ Email sent to {to_email} (BCC'd to you)")
+        return True
+    except Exception as e:
+        print(f"❌ Failed to send to {to_email}: {e}")
+        return False
