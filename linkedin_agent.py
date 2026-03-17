@@ -30,7 +30,7 @@ def linkedin_search(driver, email, password, roles):
         return results, screenshots
 
     # 2. Search Query
-    query = f'"Hiring" AND email AND "{roles}"'
+    query = f'"Hiring" AND "email" AND "{roles}"'
     encoded_query = urllib.parse.quote(query)
     url = f"https://www.linkedin.com/search/results/content/?keywords={encoded_query}"
 
@@ -74,3 +74,4 @@ def linkedin_search(driver, email, password, roles):
 #     st.table(data)
 # else:
 #     st.warning("No emails found in the current search results.")
+
