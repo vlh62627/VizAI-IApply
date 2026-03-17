@@ -1,54 +1,81 @@
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
-from linkedin_agent import linkedin_search
-from coverletter_agent import generate_cover
-from email_agent import send_application
+import streamlit as st
+import os
+import pandas as pd
+import time
 
-def create_driver():
-    options = Options()
-    options.add_argument("--headless=new")
-    options.add_argument("--no-sandbox")
-    options.add_argument("--disable-dev-shm-usage")
-    options.add_argument("--disable-blink-features=AutomationControlled")
-    # Adding a realistic user agent can help prevent LinkedIn blocks
-    options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36")
-    
-    driver = webdriver.Chrome(options=options)
-    return driver
+# 1. Page config
+st.set_page_config(
+    page_title="CareerPilot AI",
+    page_icon="✈️",
+    layout="wide"
+)
 
-def run_agents(job_roles, li_email, li_pass, user_email, cv):
-    driver = create_driver()
-    
-    # 1. Scraping identified posts
-    posts, screenshots = linkedin_search(driver, li_email, li_pass, job_roles)
-    
-    final_results = []
+# 2. Custom CSS
+st.markdown("""
+<style>
+[data-testid="stAppViewContainer"] { background-color: #1E40AF; color: white; }
+.stTextInput>div>label { color: white !important; font-weight: bold !important; font-size: 20px !important; }
+.divider { border-bottom: 2px solid #FFD700; margin: 0px 0px 5px 0px; }
+.section { margin-top: 10px; margin-bottom: 10px; }
+.stButton>button { 
+    background-color: #FFA500; color: black; font-size: 22px; 
+    padding: 14px 40px; border-radius: 12px; font-weight: bold; width: 100%;
+}
+.stButton>button:hover { background-color: #FFD700; color: #1E40AF; }
+</style>
+""", unsafe_allow_html=True)
 
-    # 2. Iterating through identified posts
-    for post in posts:
-        email_to = post.get("Email Address") or post.get("email")
-        context = post.get("Post Snippet") or post.get("text")
+# 3. Titles
+st.markdown('<h1 style="color:white; margin-bottom:0px;">✈️ CareerPilot AI</h1>', unsafe_allow_html=True)
+st.markdown('<p style="color:white; font-size:20px;">AI Job Agent: Search, Personalize, Apply</p>', unsafe_allow_html=True)
 
-        if email_to:
-            # Generate cover letter
-            cover_letter = generate_cover(context)
+# 4. Inputs
+st.markdown('<div class="divider"></div>', unsafe_allow_html=True)
+st.write("### Enter your details:")
+job_roles = st.text_input("Job Roles (e.g. QA Engineer & SDET)")
+user_email = st.text_input("Your Email (For BCC and Sending)")
+linkedin_email = st.text_input("LinkedIn Login Email")
+linkedin_password = st.text_input("LinkedIn Password", type="password")
+cv = st.file_uploader("Upload CV", type=["pdf", "docx"])
+
+# 5. Import and Run
+try:
+    from agents import run_agents
+except Exception as e:
+    st.error(f"Agents import failed: {e}")
+    run_agents = None
+
+st.markdown('<div class="divider"></div>', unsafe_allow_html=True)
+
+if st.button("Start AI Job Agent"):
+    if not (job_roles and user_email and linkedin_email and linkedin_password and cv):
+        st.warning("All fields and CV are required.")
+    elif run_agents:
+        try:
+            # Create a placeholder for the live countdown
+            status_container = st.empty()
             
-            # Send Email
-            success = send_application(email_to, user_email, cover_letter, cv)
+            # Start Agent
+            with st.spinner("Agent Initializing..."):
+                results, screenshots = run_agents(
+                    job_roles, linkedin_email, linkedin_password, user_email, cv, status_container
+                )
             
-            status = "✅ Sent & BCC'd" if success else "❌ Failed to Send"
-            
-            final_results.append({
-                "Identified Contact": email_to,
-                "Action Status": status,
-                "Source Post": context[:100] + "..."
-            })
-        else:
-            final_results.append({
-                "Identified Contact": "None Found",
-                "Action Status": "⚠️ Skipped",
-                "Source Post": context[:100] + "..."
-            })
+            status_container.success("🎯 Job Agent Run Complete!")
 
-    driver.quit()
-    return final_results, screenshots
+            # Display Screenshots
+            st.subheader("📸 Activity Log")
+            cols = st.columns(len(screenshots))
+            for idx, (title, img) in enumerate(screenshots.items()):
+                cols[idx].image(img, caption=title)
+
+            # Display Results Table
+            st.subheader("📊 Identification & Transmission Report")
+            df = pd.DataFrame(results)
+            if not df.empty:
+                st.dataframe(df, use_container_width=True)
+            else:
+                st.info("No relevant posts found in this search.")
+
+        except Exception as e:
+            st.error(f"Agent Execution Error: {e}")
